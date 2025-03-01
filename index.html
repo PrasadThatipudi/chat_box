@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>Events</title>
+    <style>
+      #parent {
+        width: 70vw;
+        height: 60vh;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        flex-direction: column;
+      }
+      #chat-box {
+        width: 40em;
+        aspect-ratio: 1.5;
+        margin-top: 10px;
+        border: 1px solid black;
+        white-space: pre-line;
+      }
+
+      #text-box {
+        width: 30em;
+        height: 2em;
+      }
+    </style>
+    <script>
+      const debug = function (arg) {
+        console.log(arg);
+        return arg;
+      };
+
+      const addAttributes = (node, attributes) =>
+        Object.keys(attributes).forEach((property) => {
+          node[property] = attributes[property];
+        });
+
+      const createNode = (nodeName, attributes, textContent) => {
+        const node = document.createElement(nodeName);
+
+        node.textContent = textContent;
+        addAttributes(node, attributes);
+
+        return node;
+      };
+
+      const handleSendMessage = (event, chatBox) => {
+        if (event.key === "Enter") {
+          chatBox.textContent = [chatBox.textContent, event.target.value]
+            .join("\n")
+            .trim();
+          event.target.value = "";
+        }
+      };
+
+      const makeChatBox = () => {
+        const textBoxAttributes = { id: "text-box", autofocus: true };
+
+        const parent = createNode("div", { id: "parent" });
+        const textBox = createNode("input", textBoxAttributes);
+        const chatBox = createNode("div", { id: "chat-box" });
+
+        parent.appendChild(chatBox);
+        parent.appendChild(textBox);
+        document.body.appendChild(parent);
+
+        textBox.onkeydown = (event) => handleSendMessage(event, chatBox);
+      };
+
+      window.onload = makeChatBox;
+    </script>
+  </head>
+  <body></body>
+</html>
