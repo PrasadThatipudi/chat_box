@@ -28,13 +28,8 @@ const createNode = (nodeName, attributes, textContent) => {
 const handleSendMessage = (event, chatBox) => {
   if (event.key === "Enter" && event.target.value) {
     const message = event.target.value;
-    const msgAttributes = {
-      className: "message",
-      style: {
-        // width: ``,
-      },
-    };
-    const messageBox = createNode("p", msgAttributes, message);
+    const messageBox = createNode("p", { className: "message" }, message);
+
     chatBox.appendChild(messageBox);
     event.target.value = "";
   }
