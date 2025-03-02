@@ -3,10 +3,18 @@ const debug = function (arg) {
   return arg;
 };
 
-const addAttributes = (node, attributes) =>
-  Object.keys(attributes).forEach((property) => {
-    node[property] = attributes[property];
+const addStyles = (node, style) =>
+  Object.keys(style).map((key) => (node.style[key] = style[key]));
+
+const addAttributes = (node, attributes) => {
+  const { style, ...rest } = attributes;
+
+  if (style) addStyles(node, style);
+
+  Object.keys(rest).forEach((property) => {
+    node[property] = rest[property];
   });
+};
 
 const createNode = (nodeName, attributes, textContent) => {
   const node = document.createElement(nodeName);
@@ -18,10 +26,16 @@ const createNode = (nodeName, attributes, textContent) => {
 };
 
 const handleSendMessage = (event, chatBox) => {
-  if (event.key === "Enter") {
-    chatBox.textContent = [chatBox.textContent, event.target.value]
-      .join("\n")
-      .trim();
+  if (event.key === "Enter" && event.target.value) {
+    const message = event.target.value;
+    const msgAttributes = {
+      className: "message",
+      style: {
+        // width: ``,
+      },
+    };
+    const messageBox = createNode("p", msgAttributes, message);
+    chatBox.appendChild(messageBox);
     event.target.value = "";
   }
 };
